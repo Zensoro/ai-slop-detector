@@ -15,6 +15,20 @@
 
 ---
 
+## 📑 目录 · Contents
+
+- [🎯 它是干什么的 · What it does](#-它是干什么的--what-it-does)
+- [🔬 为什么靠谱 · Why it's not magic](#-为什么靠谱--why-its-not-magic)
+- [⚙️ 它是怎么工作的 · How it works](#️-它是怎么工作的--how-it-works)
+- [🚀 一键接入 · One-line install](#-一键接入--one-line-install)
+- [🧩 配置信号 · Configure signals](#-配置信号--configure-signals)
+- [🤖 委托式 triage · Delegated triage (P2, optional)](#-委托式-triage--delegated-triage-p2-optional)
+- [💸 成本 · Cost](#-成本--cost)
+- [🧪 本地测试 · Local tests](#-本地测试--local-tests)
+- [📦 发布 · Publish](#-发布--publish)
+- [📄 许可 · License](#-许可--license)
+
+
 > [!NOTE]
 > **定位 reframe · Positioning reframe**
 > 打标签只是 P0 的「零摩擦接入 + 数据采集」漏斗；真正拿星、真正有用的是 **聚合污染指数（全 OSS 谁被灌最狠排行榜）+ 每仓库污染占比徽章**。Action 装进几千个仓库，语料喂给聚合层。
