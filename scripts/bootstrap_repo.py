@@ -69,8 +69,14 @@ def create_repo(token, name, org=None, private=True):
 def upload_file(token, repo, repo_path, local_path, message):
     with open(os.path.join(ROOT, local_path), "rb") as f:
         content = base64.b64encode(f.read()).decode()
-    gh("PUT", f"/repos/{repo}/contents/{repo_path}", token,
-       {"message": message, "content": content})
+    payload = {"message": message, "content": content}
+    try:
+        existing = gh("GET", f"/repos/{repo}/contents/{repo_path}", token)
+        if "sha" in existing:
+            payload["sha"] = existing["sha"]
+    except Exception:
+        pass
+    gh("PUT", f"/repos/{repo}/contents/{repo_path}", token, payload)
 
 
 def open_issue(token, repo, title, body):

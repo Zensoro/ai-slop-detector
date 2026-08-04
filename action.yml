@@ -1,6 +1,6 @@
 name: "AI Slop Detector"
 description: "Flags probable AI-generated PRs/issues with a scored label + explanatory comment. $0, zero-dep, config-as-file."
-author: "ai-slop-detector"
+author: "Zensoro"
 branding:
   icon: "alert-triangle"
   color: "red"
