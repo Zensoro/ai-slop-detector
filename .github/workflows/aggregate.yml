@@ -1,0 +1,40 @@
+name: Build AI-Slop Index
+on:
+  schedule:
+    - cron: "17 6 * * 1"   # every Monday 06:17 UTC
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build index from ClickHouse
+        run: python aggregate.py --fetch
+      - name: Commit data + site
+        run: |
+          git config user.name "ai-slop-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/ badges/ site/ || true
+          git commit -m "chore: weekly AI-slop index" && git push || echo "no changes"
+      - name: Publish to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

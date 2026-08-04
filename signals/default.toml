@@ -1,0 +1,17 @@
+# AI-slop detector signal definitions.
+# Each [[signals]] block is one structural feature.
+# Score = min(1.0, sum(weights of triggered signals)). Transparent, not a black box.
+# Default flag threshold = 0.6 (see src/scorer.py: THRESHOLD).
+# Add a signal = add a block. No code change required.
+
+[[signals]]
+name = "markdown_section_headers"
+pattern = '(?m)^##\s+(Summary|Overview|Problem|Context|Root Cause|Tests?|Testing)\b'
+weight = 0.8
+note = "Primary. Measured: Summary 82.4% AI vs 0% human; Test/Testing 78.3% AI vs 0.8% human (~98x). Checklist/What/Why/How tested and EXCLUDED (not discriminative)."
+
+[[signals]]
+name = "checkmark_emoji"
+pattern = '✅'
+weight = 0.5
+note = "Strong bonus. Present in 17.9% of AI-signed PRs vs 0% of 3.64M human PRs baseline."

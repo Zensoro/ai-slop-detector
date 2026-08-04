@@ -1,0 +1,49 @@
+name: "AI Slop Detector"
+description: "Flags probable AI-generated PRs/issues with a scored label + explanatory comment. $0, zero-dep, config-as-file."
+author: "ai-slop-detector"
+branding:
+  icon: "alert-triangle"
+  color: "red"
+inputs:
+  token:
+    description: "GitHub token used to label/comment."
+    default: ${{ github.token }}
+    required: true
+  threshold:
+    description: "Score threshold (0..1) above which an item is flagged."
+    default: "0.6"
+    required: false
+  signals:
+    description: "Path (relative to action root) to the TOML signal definitions."
+    default: "signals/default.toml"
+    required: false
+  auto_close:
+    description: "P2: auto-close flagged items at/above close_threshold. Off by default — opt in only."
+    default: "false"
+    required: false
+  close_threshold:
+    description: "P2: score (0..1) at/above which auto-close triggers. Default 0.9 (very high confidence only)."
+    default: "0.9"
+    required: false
+  close_prs:
+    description: "P2: also auto-close PRs (riskier). Default false — only issues auto-close."
+    default: "false"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Run AI-slop detector
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        THRESHOLD: ${{ inputs.threshold }}
+        SIGNALS_PATH: ${{ github.action_path }}/${{ inputs.signals }}
+        AUTO_CLOSE: ${{ inputs.auto_close }}
+        CLOSE_THRESHOLD: ${{ inputs.close_threshold }}
+        CLOSE_PRS: ${{ inputs.close_prs }}
+      run: python "${{ github.action_path }}/src/run.py"

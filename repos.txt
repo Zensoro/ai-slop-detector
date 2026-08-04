@@ -1,0 +1,17 @@
+# Tracked repos for the AI-Slop Pollution Index (种子清单，可自由增删)
+tldraw/tldraw
+neovim/neovim
+langchain-ai/langchain
+ghostty-org/ghostty
+python/cpython
+coollabsio/coolify
+vercel/next.js
+open-webui/open-webui
+n8n-io/n8n
+ollama/ollama
+curl/curl
+facebook/react
+microsoft/vscode
+rust-lang/rust
+home-assistant/core
+godotengine/godot
