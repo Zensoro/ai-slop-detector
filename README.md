@@ -36,7 +36,7 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     steps:
-      - uses: your-org/ai-slop-detector@v1
+      - uses: Zensoro/ai-slop-detector@v1
 ```
 
 ## 配置信号（加信号 = 加一块，不改代码）
@@ -63,7 +63,7 @@ weight = 0.5
 
 - **自动关闭（opt-in，默认关）**：`auto_close: true` 且分数 ≥ `close_threshold`（默认 **0.9，极高置信**）时自动关闭。默认**只关 issue、不关 PR**（`close_prs: false`）；成员 / bot 因前面已跳过，永远不会被关。关闭前仍留概率性说明，作者回复即由维护者重开。
   ```yaml
-  - uses: your-org/ai-slop-detector@v1
+  - uses: Zensoro/ai-slop-detector@v1
     with:
       auto_close: true
       close_threshold: 0.9
@@ -88,17 +88,17 @@ python tests/test_e2e.py        # 真实 run.py/digest.py 对本地 mock GitHub 
 
 ## 发布（Publish）
 
-> ⚠️ 发布前把下面所有 `your-org` 占位换成**你自己的** GitHub 用户名或 org。
-> 这是仓库唯一需要改的地方——其余代码零改动即可发布。
+> ⚠️ 若你是从本仓库复刻（fork），把下面 `Zensoro` 换成**你自己的** GitHub 用户名或 org 才能正确引用。
+> 仓库已发布为 `Zensoro/ai-slop-detector`，其余代码零改动即可引用。
 
 ```bash
-# 1) 改名（把 your-org 换成你的 handle）
-#    改 README 里 `uses: your-org/ai-slop-detector@v1` 这一处即可
+# 1) 若复刻：把 Zensoro 换成你的 handle
+#    改 README 里 `uses: Zensoro/ai-slop-detector@v1` 这一处即可
 # 2) 建仓库、提交、打 tag
 git init && git add -A && git commit -m "initial"
-git remote add origin git@github.com:<你的handle>/ai-slop-detector.git
+git remote add origin git@github.com:Zensoro/ai-slop-detector.git
 git push -u origin main && git tag v1 && git push --tags
-# 3) 别的仓库即可用：uses: <你的handle>/ai-slop-detector@v1
+# 3) 别的仓库即可用：uses: Zensoro/ai-slop-detector@v1
 ```
 
 想一键建测试仓库验端到端（开真实 issue/PR 触发），见 `scripts/bootstrap_repo.py`：

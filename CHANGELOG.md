@@ -66,5 +66,6 @@ regex; the only credential used is GitHub's built-in `github.token`.
 
 ### Publish note
 
-Replace the `your-org` placeholder in the usage snippets with your GitHub
-username or org before publishing (see README → Publishing).
+The published repo already uses `Zensoro` as the owner. If you fork it,
+replace `Zensoro` with your own GitHub username or org in the usage snippets
+(see README → Publishing).
