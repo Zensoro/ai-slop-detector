@@ -10,7 +10,7 @@ Usage:
   python src/badge.py owner/repo 12.3
   python src/badge.py owner/repo 12.3 --out badges/owner__repo.svg
 
-Also imported by aggregate.py so the leaderboard and the self-serve CLI
+Also imported by src/aggregate.py so the leaderboard and the self-serve CLI
 share one implementation (DRY).
 """
 import argparse

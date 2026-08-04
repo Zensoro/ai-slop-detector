@@ -17,11 +17,13 @@ import csv
 import urllib.request
 
 try:
-    from src.badge import make_badge, color_for
-except ImportError:  # running from inside src/ or an unusual cwd
     from badge import make_badge, color_for
+except ImportError:  # running from project root with src/ on the path
+    from src.badge import make_badge, color_for
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+# Project root (parent of src/) so repos.txt and the generated
+# data/ badges/ site/ land at the repo root, matching .gitignore + aggregate.yml.
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CH = "https://play.clickhouse.com/?user=explorer"
 WINDOW_START = "2026-01-01"
 WINDOW_END = "2026-04-30"

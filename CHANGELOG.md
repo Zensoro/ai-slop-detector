@@ -26,7 +26,7 @@ Meanwhile, off-the-shelf "AI slop detectors" are essentially non-existent
 - Members / owners / collaborators / bots are never flagged.
 
 **P1 — Aggregation + badges (the part that actually gets stars)**
-- `aggregate.py` pulls real IssuesEvent data from the public ClickHouse GH
+- `src/aggregate.py` pulls real IssuesEvent data from the public ClickHouse GH
   Archive instance and ranks repos by AI-slop %, producing a shareable
   leaderboard (`site/index.html`) + a per-repo badge SVG.
 - Self-serve badge generator (`src/badge.py`): any maintainer can render their

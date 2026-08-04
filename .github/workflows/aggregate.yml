@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Build index from ClickHouse
-        run: python aggregate.py --fetch
+        run: python src/aggregate.py --fetch
       - name: Commit data + site
         run: |
           git config user.name "ai-slop-bot"
