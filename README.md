@@ -8,7 +8,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT"></a>
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="Python 3.11+"></a>
   <img src="https://img.shields.io/badge/cost-%240%20%2F%20zero-success.svg" alt="Cost: $0 / zero">
-  <img src="https://img.shields.io/badge/tests-passing-brightgreen.svg" alt="Tests: passing">
+  <a href="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml"><img src="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml/badge.svg" alt="Tests"></a>
   <img src="https://img.shields.io/badge/dependencies-none-lightgrey.svg" alt="Dependencies: none">
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/release-v0.1.0-blue.svg" alt="Release: v0.1.0"></a>
 </p>
