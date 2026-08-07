@@ -17,7 +17,7 @@ import tempfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PY = "/Users/zen/.workbuddy/binaries/python/versions/3.13.12/bin/python3"
+PY = sys.executable
 RUN_PY = os.path.join(ROOT, "src", "run.py")
 DIGEST_PY = os.path.join(ROOT, "src", "digest.py")
 SIGNALS = os.path.join(ROOT, "signals", "default.toml")
