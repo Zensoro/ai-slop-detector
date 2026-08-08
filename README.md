@@ -10,8 +10,26 @@
   <img src="https://img.shields.io/badge/cost-%240%20%2F%20zero-success.svg" alt="Cost: $0 / zero">
   <a href="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml"><img src="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml/badge.svg" alt="Tests"></a>
   <img src="https://img.shields.io/badge/dependencies-none-lightgrey.svg" alt="Dependencies: none">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/release-v0.1.0-blue.svg" alt="Release: v0.1.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/release-v1.0.0-blue.svg" alt="Release: v1.0.0"></a>
 </p>
+
+> **The $0 AI-slop guard for open-source maintainers.** Scores PR/Issue bodies on open with pure regex; flags probable AI-generated slop with a label + scored comment. Zero dependencies, no LLM, no external API — **label-only by default, never auto-closes** unless you opt in.
+
+```yaml
+# .github/workflows/ai-slop.yml — copy & save, done
+name: AI Slop Detect
+on:
+  pull_request: { types: [opened] }
+  issues:      { types: [opened] }
+permissions:
+  issues: write
+  pull-requests: write
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Zensoro/ai-slop-detector@v1
+```
 
 ---
 
