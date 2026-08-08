@@ -35,14 +35,16 @@ def load_repos(path=None):
         return [l.strip() for l in f if l.strip() and not l.startswith("#")]
 
 
-def build_query(repos):
+def build_query(repos, start=None, end=None):
+    start = start or WINDOW_START
+    end = end or WINDOW_END
     in_list = ", ".join(f"'{r}'" for r in repos)
     return f"""SELECT repo_name, count() AS total,
   countIf(match(body, '✅') OR match(body, '(?m)^##\\s+(Summary|Overview|Problem|Context|Root Cause|Tests?|Testing)')) AS ai_count,
   round(100.0*ai_count/total,1) AS pct
 FROM github_events
 WHERE event_type='IssuesEvent' AND action='opened'
-  AND created_at BETWEEN '{WINDOW_START}' AND '{WINDOW_END}'
+  AND created_at BETWEEN '{start}' AND '{end}'
   AND repo_name IN ({in_list})
 GROUP BY repo_name ORDER BY pct DESC
 FORMAT JSONEachRow"""
@@ -72,12 +74,12 @@ def safe_name(repo):
     return repo.replace("/", "__")
 
 
-def fetch_or_load(repos, refresh=False, root=ROOT):
+def fetch_or_load(repos, refresh=False, root=ROOT, start=None, end=None):
     raw_path = os.path.join(root, "data", "raw.json")
     if not refresh and os.path.exists(raw_path):
         with open(raw_path, encoding="utf-8") as f:
             return json.load(f)
-    text = fetch_clickhouse(build_query(repos))
+    text = fetch_clickhouse(build_query(repos, start, end))
     if text is None:
         if os.path.exists(raw_path):
             with open(raw_path, encoding="utf-8") as f:
@@ -187,9 +189,12 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--fetch", action="store_true", help="force re-pull from ClickHouse")
     p.add_argument("--no-fetch", action="store_true", help="use cached data/raw.json only")
+    p.add_argument("--start", default=WINDOW_START, help="window start (YYYY-MM-DD)")
+    p.add_argument("--end", default=WINDOW_END, help="window end (YYYY-MM-DD)")
     args = p.parse_args()
     repos = load_repos()
-    rows = fetch_or_load(repos, refresh=(args.fetch and not args.no_fetch))
+    rows = fetch_or_load(repos, refresh=(args.fetch and not args.no_fetch),
+                         start=args.start, end=args.end)
     build_outputs(rows)
     print("P1 build complete.")
 

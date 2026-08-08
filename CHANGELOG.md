@@ -1,7 +1,39 @@
 # Changelog
 
 All notable changes to AI-Slop-Detector are documented here. This project
-follows a lightweight versioning scheme: `v0.x` = pre-1.0, API may still shift.
+follows a lightweight versioning scheme: `v1.x` = stable public release.
+
+---
+
+## v1.0.0 — 2026-08-08
+
+First **public Marketplace release** (`AI Slop PR Guard`). Improvements over v0.1.0:
+
+### Reliability
+- `github_api()` now retries transient failures: waits on 429 (Retry-After),
+  retries 5xx / network errors with backoff, and raises a clean
+  `RuntimeError` instead of crashing the whole Action.
+- `main()` wraps execution so one bad event can never fail the run — it logs
+  and exits 1 non-fatally.
+- Short bodies (< 20 chars) are skipped to avoid flagging one-line human
+  submissions.
+
+### Accuracy (false-positive guard)
+- New **human signals** subtract from the score: referencing an issue/PR
+  (`#123`) pulls the score down. A human PR that merely uses a `##` header is
+  no longer flagged.
+- Signals and thresholds remain fully transparent and configurable.
+
+### Docs & polish
+- README hero: English quickstart block + real demo screenshot
+  (`docs/demo.png`).
+- FAQ section, Issue/PR templates, `funding.yml` (GitHub Sponsors).
+- `aggregate.py` data window is now CLI-parameterizable (`--start --end`).
+- Published to GitHub Marketplace under a unique name.
+
+### Testing
+- Added unit tests for API retry/error handling, short-body skip, and the
+  auto-close trust boundary. Full suite: unit + e2e all pass.
 
 ---
 

@@ -28,6 +28,18 @@ DEFAULT_SIGNALS = [
 
 THRESHOLD = 0.6  # default; label only, never auto-close
 
+# Negative signals: patterns typical of *human* contributors. Each hit
+# subtracts from the score, which reduces false positives (e.g. a human PR
+# that happens to use a `##` header but references an issue). Measured/
+# observed behaviour: humans reference issues (`#123`), AI templates rarely do.
+DEFAULT_HUMAN_SIGNALS = [
+    {
+        "name": "issue_reference",
+        "pattern": r"#\d+",
+        "weight": 0.3,
+    },
+]
+
 
 def load_signals(path=None):
     """Load signals from a TOML file (stdlib tomllib, Python 3.11+).
@@ -50,7 +62,12 @@ def load_signals(path=None):
 
 
 def score_text(text, signals=None):
-    """Return (score in [0,1], list_of_triggered_signal_names)."""
+    """Return (score in [0,1], list_of_triggered_positive_signal_names).
+
+    Positive signals add weight; human signals (DEFAULT_HUMAN_SIGNALS)
+    subtract. Score is clamped to [0, 1]. Human hits are kept internal so
+    the returned signal list stays clean for explanations/digests.
+    """
     if not text:
         return 0.0, []
     signals = signals or DEFAULT_SIGNALS
@@ -60,7 +77,10 @@ def score_text(text, signals=None):
         if re.search(s["pattern"], text):
             hits.append(s["name"])
             raw += s["weight"]
-    return min(1.0, raw), hits
+    for h in DEFAULT_HUMAN_SIGNALS:
+        if re.search(h["pattern"], text):
+            raw -= h["weight"]
+    return max(0.0, min(1.0, raw)), hits
 
 
 def verdict(score, threshold=THRESHOLD):

@@ -11,6 +11,7 @@
   <a href="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml"><img src="https://github.com/Zensoro/ai-slop-detector/actions/workflows/ci.yml/badge.svg" alt="Tests"></a>
   <img src="https://img.shields.io/badge/dependencies-none-lightgrey.svg" alt="Dependencies: none">
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/release-v1.0.0-blue.svg" alt="Release: v1.0.0"></a>
+  <a href="https://github.com/Zensoro/ai-slop-detector/stargazers"><img src="https://img.shields.io/github/stars/Zensoro/ai-slop-detector.svg" alt="GitHub stars"></a>
 </p>
 
 > **The $0 AI-slop guard for open-source maintainers.** Scores PR/Issue bodies on open with pure regex; flags probable AI-generated slop with a label + scored comment. Zero dependencies, no LLM, no external API — **label-only by default, never auto-closes** unless you opt in.
@@ -42,6 +43,7 @@ jobs:
 - [🧩 配置信号 · Configure signals](#-配置信号--configure-signals)
 - [🤖 委托式 triage · Delegated triage (P2, optional)](#-委托式-triage--delegated-triage-p2-optional)
 - [💸 成本 · Cost](#-成本--cost)
+- [❓ 常见问题 · FAQ](#-常见问题--faq)
 - [🧪 本地测试 · Local tests](#-本地测试--local-tests)
 - [📦 发布 · Publish](#-发布--publish)
 - [📄 许可 · License](#-许可--license)
@@ -59,6 +61,11 @@ jobs:
 一个 GitHub Action：在 PR / Issue 打开时，用**纯正则结构特征**给正文打分，疑似 AI 生成就打标签 + 留一条带分数和理由的评论。不误伤就装死，**默认只标不关**。
 
 *A GitHub Action that scores PR / Issue bodies on open using **pure regex structural features**. Suspected AI-generated content gets a label plus a comment with the score and rationale. It stays quiet unless something looks off — **label-only by default, never auto-closes**.*
+
+<p align="center"><img src="docs/demo.png" alt="Demo: an AI-slop PR is flagged with a label + scored comment" width="720"></p>
+
+> **降误报 · False-positive guard**：人类信号会**减分**——引用 issue 编号（`#123`）、正文过短都会拉低分数，让"用了 `##` 标题但其实是人"的 PR 不被误伤。
+> *Human signals subtract from the score: referencing an issue (`#123`) or a very short body pulls the score down, so a human PR that merely uses a `##` header is not flagged.*
 
 ---
 
@@ -177,6 +184,30 @@ weight = 0.5
 运行时纯正则，无嵌入 / 无 LLM / 无外部服务 / 无密钥（只用 `github.token`）。**$0**。
 
 *Pure regex at runtime — no embedding, no LLM, no external service, no secrets (only `github.token`). **$0**.*
+
+---
+
+## ❓ 常见问题 · FAQ
+
+**Q: 会不会误伤真实贡献者？**
+*False positives?*
+→ 有三道防线：① **只打标签不自动关闭**（默认）② 阈值可调（`inputs.threshold`）③ 人类信号会**减分**（引用 `#123`、正文过短）。被标记的真实贡献者回复一句，维护者即可清除标签。*Three layers of protection: label-only by default, tunable threshold, and human signals that subtract from the score.*
+
+**Q: AI 灌水很多但没检测到，怎么办？**
+*Missed some slop?*
+→ 在 `signals/default.toml` 加一块正则信号即可，无需改代码。或把未命中样本发到 [Issues](https://github.com/Zensoro/ai-slop-detector/issues)，我们用 GH Archive 数据验证后合入。*Add a signal block in `signals/default.toml` — no code change. Or open an issue with the missed sample.*
+
+**Q: 支持自建 GitHub（GHES）吗？**
+*GitHub Enterprise Server?*
+→ 支持。通过 `vars.AI_SLOP_API` 指向你的实例（如 `https://github.example.com/api/v3`）。*Yes — point `vars.AI_SLOP_API` at your instance.*
+
+**Q: 需要付费或 API key 吗？**
+*Any cost / API key?*
+→ 不需要。只用 GitHub 内建的 `github.token`，纯正则，$0。*No — pure regex on GitHub's built-in token.*
+
+**Q: 能自动关闭 AI 灌水的 PR 吗？**
+*Can it auto-close?*
+→ 可以，但**默认关闭**（防误伤）。设置 `auto_close: true` + `close_threshold`（默认 0.9 极高置信）。详见上方「委托式 triage」。*Yes, but off by default — see "Delegated triage" above.*
 
 ---
 

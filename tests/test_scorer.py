@@ -48,9 +48,30 @@ def test_comment_explains():
     assert c and "probabilistic" in c and "not an accusation" in c
 
 
+def test_human_signal_subtracts():
+    # A body with AI markers that ALSO references an issue: score drops below
+    # threshold thanks to the human signal (0.8 - 0.3 = 0.5 < 0.6).
+    body = "## Summary\nFixes the issue. references #42"
+    score, hits = score_text(body)
+    assert score < THRESHOLD, score
+    assert verdict(score) is None
+    # hits only contains positive signals, never the human signal
+    assert "issue_reference" not in hits
+
+
+def test_ai_with_reference_still_flagged():
+    # AI-templated PR that cites an issue: 0.8 + 0.5 - 0.3 = 1.0 → still flagged.
+    body = "## Summary\nAdd feature\n\n## Testing\n- ✅ done\n\nFixes #99"
+    score, hits = score_text(body)
+    assert score >= THRESHOLD, score
+    assert verdict(score) == "ai-slop:needs-review"
+
+
 if __name__ == "__main__":
     test_ai_flagged()
     test_human_not_flagged()
     test_human_headers_not_flagged()
     test_comment_explains()
+    test_human_signal_subtracts()
+    test_ai_with_reference_still_flagged()
     print("ALL TESTS PASSED")
