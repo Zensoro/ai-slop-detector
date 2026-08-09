@@ -265,3 +265,17 @@ GITHUB_TOKEN=ghp_xxx python scripts/bootstrap_repo.py
 ---
 
 > Made with 🛡️ by [Zensoro](https://github.com/Zensoro) · $0 · zero-dependency · config-as-file
+
+---
+
+## 🤖 Development & AI Disclosure
+
+This project is developed with **heavy AI assistance** (code generation, tests,
+docs, refactoring, debugging).
+
+- **Detection logic is human-reviewed**: the regex rules and scoring heuristics
+  are reviewed at source level, not machine-asserted.
+- **Tests run independently in CI**: everything is reproducible via GitHub
+  Actions.
+- **Accuracy over hype**: if you find any overstated claim, please open an
+  issue.
