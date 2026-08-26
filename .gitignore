@@ -8,7 +8,8 @@ __pycache__/
 data/
 site/
 badges/
-digest/
+digest/*
+!digest/latest.md
 
 # OS / editor
 .DS_Store
