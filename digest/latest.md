@@ -1,6 +1,6 @@
 # 🛡️ AI-Slop Weekly Digest — `Zensoro/ai-slop-detector`
 
-_Window: last 7 days · generated 2026-11-02 16:08 UTC_
+_Window: last 7 days · generated 2026-11-09 16:31 UTC_
 
 - **Flagged this week:** 0
   - Issues: 0 · PRs: 0
